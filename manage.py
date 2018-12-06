@@ -4,11 +4,18 @@ from flask_script import Manager
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, EqualTo
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate, MigrateCommand
 
 app = Flask(__name__)
 manage = Manager(app)
 # en64=base64.b64encode(uuid.uuid4().bytes)
 app.config['SECRET_KEY'] = 'XL57Byw6Tj2q3U7gtDWDIw=='
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:mysql@127.0.0.1:3306/lsdance'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+db = SQLAlchemy(app)
+Migrate(app, db)
+manage.add_command("db", MigrateCommand)
 
 
 class RegistForm(FlaskForm):
