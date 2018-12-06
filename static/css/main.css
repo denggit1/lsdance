@@ -70,3 +70,10 @@ body{
 .music p a{
 	color: #9d9d9d;
 }
+.hh{
+	margin: auto;
+	padding-top: 10px;
+}
+.hh img{
+	width: 100%;
+}

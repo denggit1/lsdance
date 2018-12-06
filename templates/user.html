@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+{% block page %}
+<div class="container">
+    <div class="hh">
+        <img src="/static/img/c5.png" alt="">
+    </div>
+    <div>
+        <form action="/" method="post">
+            {{ form.csrf_token }}
+            <br>
+            {% block input %}
+            {% endblock %}
+        </form>
+    </div>
+</div>
+{% endblock %}
