@@ -3,7 +3,7 @@
     <div class="sr">
         <div class="input-group">
             <span class="input-group-addon">学号：</span>
-            {{ form.uname }}
+            {{ form.stuid }}
         </div>
         <br>
         <div class="input-group">
@@ -17,9 +17,7 @@
             <button type="submit" class="btn btn-default">登陆</button>
         </div>
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default">
-                <a style="text-decoration:none;color: #333;" href="/register">注册</a>
-            </button>
+            <button type="button" onclick="location.href='/register'" class="btn btn-default">注册</button>
         </div>
     </div>
 {% endblock %}
