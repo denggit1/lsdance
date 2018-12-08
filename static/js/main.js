@@ -1,10 +1,12 @@
 $(function () {
     $(".lb").css({"width":$(".img").css("width")});
     // $(".hh").css({"width":$(window).width()/2});
+    $(".qun").css({"width":$(window).width()/2});
     $(".sr").children("div").children("input").addClass("form-control");
     $(window).resize(function() {
-      $(".lb").css({"width":$(".img").css("width")});
-      // $(".hh").css({"width":$(window).width()/2});
+        $(".lb").css({"width":$(".img").css("width")});
+        // $(".hh").css({"width":$(window).width()/2});
+        $(".qun").css({"width":$(window).width()/2});
     });
     $(".zctj").click(function() {
         var stuid = $.trim($("input[name='stuid']").val());

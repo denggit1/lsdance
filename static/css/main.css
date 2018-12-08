@@ -4,7 +4,7 @@ body{
 .main{
 	width: 100%;
 	height: 100%;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 .dbdh{
 	width: 100%;
@@ -60,17 +60,21 @@ body{
 .jrxh a{
 	width: 100%;
 }
-.xhul{
-	padding-left: 25px;
-}
-.xhul li{
-	font-size:21px;
-}
-.xhul li a{
-	color: #9d9d9d;
-}
+/*.xhul{*/
+	/*padding-left: 25px;*/
+/*}*/
+/*.xhul li{*/
+	/*font-size:21px;*/
+/*}*/
+/*.xhul li a{*/
+	/*color: #9d9d9d;*/
+/*}*/
 .musicmv p a{
 	color: #9d9d9d;
+}
+.footer-bottom{
+	width: 100%;
+	margin: 0;
 }
 .hh{
 	width: 188px;
@@ -79,6 +83,14 @@ body{
 	padding-top: 10px;
 }
 .hh img{
+	width: 100%;
+	height: 100%;
+}
+.qun{
+	padding-top: 20px;
+	margin: auto;
+}
+.qun img{
 	width: 100%;
 	height: 100%;
 }

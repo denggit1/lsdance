@@ -58,7 +58,7 @@ def Info():
         info2 = '<a href="/userinfo">用户中心</a>'.decode('utf-8')
         info3 = '<a href="/sessionpop">退出</a>'.decode('utf-8')
     else:
-        info1 = ''
+        info1 = '欢迎'.decode('utf-8')
         info2 = '<a href="/login">登录</a>'.decode('utf-8')
         info3 = '<a href="/register">注册</a>'.decode('utf-8')
     info = {'info1': info1, 'info2': info2, 'info3': info3}
@@ -99,6 +99,11 @@ def dancemv():
 def dancemusic():
     info = Info()
     return render_template('dancemusic.html', info=info)
+
+
+@app.route('/qun')
+def qun():
+    return render_template('qun.html')
 
 
 @app.route('/login', methods=['POST', 'GET'])
