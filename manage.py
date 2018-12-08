@@ -1,5 +1,5 @@
 # coding=utf-8
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify, session, redirect
 from flask_script import Manager
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, PasswordField
@@ -51,64 +51,117 @@ class Role(db.Model):
     users = db.relationship("User", backref="role")
 
 
+def Info():
+    stuid = session.get('stuid')
+    if stuid is not None:
+        info1 = db.session.query(User).filter(User.stuid == stuid).first().name
+        info2 = '<a href="/userinfo">用户中心</a>'.decode('utf-8')
+        info3 = '<a href="/sessionpop">退出</a>'.decode('utf-8')
+    else:
+        info1 = ''
+        info2 = '<a href="/login">登录</a>'.decode('utf-8')
+        info3 = '<a href="/register">注册</a>'.decode('utf-8')
+    info = {'info1': info1, 'info2': info2, 'info3': info3}
+    return info
+
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    info = Info()
+    return render_template('index.html', info=info)
 
 
 @app.route('/photo')
 def photo():
-    return render_template('photo.html')
+    info = Info()
+    return render_template('photo.html', info=info)
 
 
 @app.route('/introduce')
 def introduce():
-    return render_template('introduce.html')
+    info = Info()
+    return render_template('introduce.html', info=info)
 
 
 @app.route('/dancetype')
 def dancetype():
-    return render_template('dancetype.html')
+    info = Info()
+    return render_template('dancetype.html', info=info)
 
 
 @app.route('/dancemv')
 def dancemv():
-    return render_template('dancemv.html')
+    info = Info()
+    return render_template('dancemv.html', info=info)
 
 
 @app.route('/dancemusic')
 def dancemusic():
-    return render_template('dancemusic.html')
+    info = Info()
+    return render_template('dancemusic.html', info=info)
 
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     form = RegistForm()
-    print('login')
-    if form.validate_on_submit():
-        print('hehe')
+    if request.method == 'POST':
         stuid = form.stuid.data
         upwd = form.upwd.data
         s1 = sha()
         s1.update(upwd)
         pwd = s1.hexdigest()
-        print(db.session.query(User).filter(User.stuid == stuid).count())
+        if db.session.query(User).filter(User.stuid == stuid).count() <= 0:
+            x = 'sid0'
+        elif db.session.query(User).filter(User.stuid == stuid).filter(User.pwd == pwd).count() <= 0:
+            x = 'pwd0'
+        else:
+            x = 'ok'
+            # 保存stuid
+            session['stuid'] = db.session.query(User).filter(User.stuid == stuid).filter(User.pwd == pwd).first().stuid
+        data = {'status': x}
+        return jsonify(data)
     return render_template('login.html', form=form)
 
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     form = RegistForm()
-    if form.validate_on_submit():
+    if request.method == 'POST':
         stuid = form.stuid.data
         upwd = form.upwd.data
+        namestr = str(stuid)
+        if namestr[2:3] == '2':
+            name = namestr[:2] + '届单招生'
+        elif namestr[2:3] == '3':
+            name = namestr[:2] + '届统招生'
+        else:
+            name = '成员'
         s1 = sha()
         s1.update(upwd)
         pwd = s1.hexdigest()
-        user1 = User(stuid=int(stuid), pwd=pwd)
-        db.session.add(user1)
-        db.session.commit()
+        if db.session.query(User).filter(User.stuid == stuid).count() > 0:
+            x = 'sid1'
+        else:
+            x = 'sid0'
+            user1 = User(stuid=int(stuid), pwd=pwd, name=name)
+            db.session.add(user1)
+            db.session.commit()
+            # 保存stuid
+            session['stuid'] = db.session.query(User).filter(User.stuid == stuid).filter(User.pwd == pwd).first().stuid
+        data = {'status': x}
+        return jsonify(data)
     return render_template('register.html', form=form)
+
+
+@app.route('/sessionpop')
+def sessionpop():
+    session.pop('stuid')
+    return redirect('/')
+
+
+@app.route('/userinfo')
+def userinfo():
+    return 'userinfo'
 
 
 if __name__ == '__main__':

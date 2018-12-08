@@ -5,14 +5,14 @@
 			<div class="dldhdiv">
 				<div>
 					<ol class="breadcrumb">
-						<li class="active">欢迎</li>
+						<li class="active">欢迎你{{ info['info1'] }}</li>
 					</ol>
 				</div>
 				<div>
 					<ol class="breadcrumb">
-						<li><a href="http://www.jvtc.jx.cn/" target='_BLANK'>九江职业技术学院</a></li>
-						<li><a href="/login">登录</a></li>
-						<li><a href="/register">注册</a></li>
+						<li><a href="http://www.jvtc.jx.cn/" target='_BLANK'>九职院</a></li>
+						<li>{{ info['info2'] | safe }}</li>
+						<li>{{ info['info3'] | safe }}</li>
 					</ol>
 				</div>
 			</div>

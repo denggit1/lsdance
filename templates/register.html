@@ -1,28 +1,32 @@
 {% extends 'user.html' %}
 {% block input %}
-    <div class="sr">
-        <div class="input-group">
-            <span class="input-group-addon">输入学号：</span>
-            {{ form.stuid }}
-        </div>
+    <form id="user" action="" method="post">
+        {{ form.csrf_token }}
         <br>
-        <div class="input-group">
-            <span class="input-group-addon">输入密码：</span>
-            {{ form.upwd }}
+        <div class="sr">
+            <div class="input-group">
+                <span class="input-group-addon">输入学号：</span>
+                {{ form.stuid }}
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">输入密码：</span>
+                {{ form.upwd }}
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">确认密码：</span>
+                {{ form.upwd2 }}
+            </div>
+            <br>
         </div>
-        <br>
-        <div class="input-group">
-            <span class="input-group-addon">确认密码：</span>
-            {{ form.upwd2 }}
+        <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default zctj">完成填写并提交</button>
+            </div>
+            <div class="btn-group" role="group">
+                <button type="button" onclick="location.href='/login'" class="btn btn-default">已有帐号去登陆</button>
+            </div>
         </div>
-        <br>
-    </div>
-    <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
-        <div class="btn-group" role="group">
-            <button type="submit" class="btn btn-default zctj">完成填写并提交</button>
-        </div>
-        <div class="btn-group" role="group">
-            <button type="button" onclick="location.href='/login'" class="btn btn-default">已有帐号去登陆</button>
-        </div>
-    </div>
+    </form>
 {% endblock %}
