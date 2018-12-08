@@ -44,10 +44,7 @@ body{
 }
 .jmpd{
 	margin: 0;
-	padding-top: 10px;
-}
-.footer-bottom{
-	width: 100%;
+	padding: 15px;
 }
 .hdimg{
 	width: 100%;
@@ -63,13 +60,16 @@ body{
 .jrxh a{
 	width: 100%;
 }
+.xhul{
+	padding-left: 25px;
+}
 .xhul li{
 	font-size:21px;
 }
 .xhul li a{
 	color: #9d9d9d;
 }
-.music p a{
+.musicmv p a{
 	color: #9d9d9d;
 }
 .hh{

@@ -161,7 +161,7 @@ def sessionpop():
 
 @app.route('/userinfo')
 def userinfo():
-    return 'userinfo'
+    return render_template('userinfo.html')
 
 
 if __name__ == '__main__':
