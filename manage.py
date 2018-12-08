@@ -166,7 +166,32 @@ def sessionpop():
 
 @app.route('/userinfo')
 def userinfo():
-    return render_template('userinfo.html')
+    stuid = session.get('stuid')
+    if stuid is not None:
+        id = db.session.query(User).filter(User.stuid == stuid).first().id
+        name = db.session.query(User).filter(User.stuid == stuid).first().name
+        phone = db.session.query(User).filter(User.stuid == stuid).first().phone
+        college = db.session.query(Class).filter(
+            Class.id == db.session.query(User).filter(User.stuid == stuid).first().class_id).first().college
+        userclass = db.session.query(Class).filter(
+            Class.id == db.session.query(User).filter(User.stuid == stuid).first().class_id).first().Class
+        role = db.session.query(Role).filter(
+            Class.id == db.session.query(User).filter(User.stuid == stuid).first().role_id).first().role
+    else:
+        return redirect('/login')
+    data = {'id': id, 'stuid': stuid, 'name': name, 'phone': phone,
+            'college': college, 'userclass': userclass, 'role': role}
+    return render_template('userinfo.html', data=data)
+
+
+@app.route('/userinfo/account')
+def account():
+    return render_template('account.html')
+
+
+@app.route('/userinfo/datum')
+def datum():
+    return render_template('datum.html')
 
 
 if __name__ == '__main__':

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="/static/img/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <script src="/static/bootstrap/js/jquery-1.12.4.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/main.css">
+	<script src="/static/js/main.js"></script>
+	<meta name="author" content="D">
+    <title>蓝沙舞蹈俱乐部-用户中心</title>
+</head>
+<body>
+    <div class="main">
+			<div class="dbdh">
+				<nav class="navbar navbar-inverse navbar-default navbar-fixed-top">
+					<div class="container">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+									data-target="#bs-example-navbar-collapse-6" aria-expanded="false">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<a class="navbar-brand" href="/">LSDanceClub</a>
+						</div>
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
+							<ul class="nav navbar-nav">
+								<li><a href="/userinfo/account">帐户管理</a></li>
+								<li><a href="/userinfo/datum">修改资料</a></li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</div>
+        {% block page %}
+        {% endblock %}
+        <div class="row footer-bottom">
+			<hr>
+			<ul class="list-inline text-center">
+				<li><a href="#">*ICP备********号</a></li><li>*公网安备**************</li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>
