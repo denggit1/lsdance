@@ -1,21 +1,19 @@
-{% extends 'info.html' %}
-{% block page %}
-    <div>
-        {{ data['id'] }}<br>
-        {{ data['stuid'] }}<br>
-        {{ data['name'] }}<br>
-        {{ data['phone'] }}<br>
-        {{ data['college'] }}<br>
-        {{ data['userclass'] }}<br>
-        {{ data['role'] }}<br>
-    </div>
-<div class="container">
-	<span class="label label-default">用户ID</span><br>
-	<span class="label label-default">用户学号</span><br>
-	<span class="label label-default">用户姓名</span><br>
-	<span class="label label-default">手机号码</span><br>
-	<span class="label label-default">用户学院</span><br>
-	<span class="label label-default">用户班级</span><br>
-	<span class="label label-default">用户权限</span><br>
+{% extends 'infobase.html' %}
+{% block text %}
+<div class="jmnei">
+    <p><span class="label label-default">用户帐号:</span>
+        <span class="label label-success">{{ data['id'] }}</span></p>
+    <p><span class="label label-default">用户学号:</span>
+        <span class="label label-success">{{ data['stuid'] }}</span></p>
+    <p><span class="label label-default">用户姓名:</span>
+        <span class="label label-success">{{ data['name'] }}</span></p>
+    <p><span class="label label-default">手机号码:</span>
+        <span class="label label-success">{{ data['phone'] }}</span></p>
+    <p><span class="label label-default">用户学院:</span>
+        <span class="label label-success">{{ data['college'] }}</span></p>
+    <p><span class="label label-default">用户班级:</span>
+        <span class="label label-success">{{ data['userclass'] }}</span></p>
+    <p><span class="label label-default">用户权限:</span>
+        <span class="label label-success">{{ data['role'] }}</span></p><br>
 </div>
 {% endblock %}

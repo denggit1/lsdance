@@ -94,3 +94,34 @@ body{
 	width: 100%;
 	height: 100%;
 }
+.jmnei p{
+	display: flex;
+	margin: 25px;
+	font-size: 20px;
+}
+.jmnei p span{
+	padding-top: 4.5px;
+}
+.jmnei p span:nth-child(1){
+	margin-right: 30px;
+}
+.jmnei p span:nth-child(2){
+	width: 135px;
+	height: 24.3px;
+}
+.infojm{
+	width: 100%;
+	height: auto;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+.ils{
+	transform: scale(0.5);
+}
+.datum{
+	padding-left: 11.6px;
+}
+.datum form div{
+	margin-bottom: 40px;
+}

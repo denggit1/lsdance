@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, jsonify, session, redirect
 from flask_script import Manager
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, PasswordField
+from wtforms import IntegerField, PasswordField, StringField
 from wtforms.validators import DataRequired, EqualTo
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
@@ -31,17 +31,10 @@ class User(db.Model):
     stuid = db.Column(db.Integer, unique=True, nullable=False)
     pwd = db.Column(db.String(40), unique=False, nullable=False)
     name = db.Column(db.String(32), unique=False, nullable=True)
-    phone = db.Column(db.Integer, unique=False, nullable=True)
-    class_id = db.Column(db.Integer, db.ForeignKey('class.id'), default=1)
-    role_id = db.Column(db.Integer, db.ForeignKey('role.id'), default=1)
-
-
-class Class(db.Model):
-    __tablename__ = 'class'
-    id = db.Column(db.Integer, primary_key=True)
-    Class = db.Column(db.String(32), unique=True, nullable=True)
+    phone = db.Column(db.String(32), unique=False, nullable=True)
     college = db.Column(db.String(32), unique=False, nullable=True)
-    users = db.relationship("User", backref="class")
+    userclass = db.Column(db.String(32), unique=False, nullable=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'), default=1)
 
 
 class Role(db.Model):
@@ -132,6 +125,11 @@ def login():
 def register():
     form = RegistForm()
     if request.method == 'POST':
+        if db.session.query(Role).all() == []:
+            role1 = Role(id=1, role='people')
+            db.session.add(role1)
+            db.session.commit()
+            print db.session.query(Role).all()
         stuid = form.stuid.data
         upwd = form.upwd.data
         namestr = str(stuid)
@@ -167,31 +165,48 @@ def sessionpop():
 @app.route('/userinfo')
 def userinfo():
     stuid = session.get('stuid')
-    if stuid is not None:
+    if stuid is None:
+        return redirect('/login')
+    else:
         id = db.session.query(User).filter(User.stuid == stuid).first().id
         name = db.session.query(User).filter(User.stuid == stuid).first().name
         phone = db.session.query(User).filter(User.stuid == stuid).first().phone
-        college = db.session.query(Class).filter(
-            Class.id == db.session.query(User).filter(User.stuid == stuid).first().class_id).first().college
-        userclass = db.session.query(Class).filter(
-            Class.id == db.session.query(User).filter(User.stuid == stuid).first().class_id).first().Class
+        college = db.session.query(User).filter(User.stuid == stuid).first().college
+        userclass = db.session.query(User).filter(User.stuid == stuid).first().userclass
         role = db.session.query(Role).filter(
-            Class.id == db.session.query(User).filter(User.stuid == stuid).first().role_id).first().role
-    else:
-        return redirect('/login')
+            Role.id == db.session.query(User).filter(User.stuid == stuid).first().role_id).first().role
     data = {'id': id, 'stuid': stuid, 'name': name, 'phone': phone,
             'college': college, 'userclass': userclass, 'role': role}
-    return render_template('userinfo.html', data=data)
+    title = u'用户中心'
+    return render_template('userinfo.html', data=data, title=title)
 
 
 @app.route('/userinfo/account')
 def account():
-    return render_template('account.html')
+    title = u'帐号管理'
+    return render_template('account.html', title=title)
 
 
-@app.route('/userinfo/datum')
+@app.route('/userinfo/datum', methods=['POST', 'GET'])
 def datum():
-    return render_template('datum.html')
+    stuid = session.get('stuid')
+    if stuid is None:
+        return redirect('/login')
+    elif request.method == 'POST':
+        name = request.form.get('name', '')
+        phone = request.form.get('phone', '')
+        college = request.form.get('college', '')
+        userclass = request.form.get('userclass', '')
+        if name.strip() != '' and phone.strip() != '' and college.strip() != '' and userclass.strip() != '':
+            user = db.session.query(User).filter(User.stuid == stuid).first()
+            user.name = name
+            user.phone = phone
+            user.college = college
+            user.userclass = userclass
+            db.session.commit()
+        return redirect('/userinfo')
+    title = u'修改资料'
+    return render_template('datum.html', title=title)
 
 
 if __name__ == '__main__':

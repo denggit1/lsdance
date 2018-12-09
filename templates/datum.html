@@ -1,3 +1,28 @@
-{% extends 'info.html' %}
-{% block page %}
+{% extends 'infobase.html' %}
+{% block text %}
+<div class="datum">
+    <form action="" method="post">
+        <div class="input-group">
+            <span class="input-group-addon">用户姓名:</span>
+            <input name="name" type="text" class="form-control" placeholder="请输入用户姓名"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">手机号码:</span>
+            <input name="phone" type="text" class="form-control" placeholder="请输入手机号码"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">用户学院:</span>
+            <input name="college" type="text" class="form-control" placeholder="请输入用户学院"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">用户班级:</span>
+            <input name="userclass" type="text" class="form-control" placeholder="请输入用户班级"
+                   aria-describedby="basic-addon1">
+        </div>
+        <button type="submit" style="width: 286.4px;height: auto;" class="btn btn-success">保存</button>
+    </form>
+</div>
 {% endblock %}
