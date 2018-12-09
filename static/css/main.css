@@ -120,8 +120,15 @@ body{
 	transform: scale(0.5);
 }
 .datum{
-	padding-left: 11.6px;
+	margin-left: 25px;
 }
 .datum form div{
+	margin-bottom: 40px;
+}
+.account{
+	padding-top: 74.4px;
+	margin-left: 25px;
+}
+.account form div{
 	margin-bottom: 40px;
 }

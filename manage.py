@@ -181,8 +181,26 @@ def userinfo():
     return render_template('userinfo.html', data=data, title=title)
 
 
-@app.route('/userinfo/account')
+@app.route('/userinfo/account', methods=['POST', 'GET'])
 def account():
+    stuid = session.get('stuid')
+    if stuid is None:
+        return redirect('/login')
+    elif request.method == 'POST':
+        upwd = request.form.get('upwd', '')
+        newpwd = request.form.get('newpwd', '')
+        newpwd2 = request.form.get('newpwd2', '')
+        s1 = sha()
+        s1.update(upwd)
+        pwd = s1.hexdigest()
+        s2 = sha()
+        s2.update(newpwd)
+        shanewpwd = s2.hexdigest()
+        user = db.session.query(User).filter(User.pwd == pwd).first()
+        if upwd != '' and newpwd != '' and newpwd2 != '' and newpwd == newpwd2 and user is not None:
+            user.pwd = shanewpwd
+            db.session.commit()
+        return redirect('/userinfo')
     title = u'帐号管理'
     return render_template('account.html', title=title)
 
