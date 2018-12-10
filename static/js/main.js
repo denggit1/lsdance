@@ -1,7 +1,7 @@
 $(function () {
     var author = 'D'
     $(".lb").css({"width":$(".img").css("width")});
-    // $(".hh").css({"width":$(window).width()/2});
+    // $(".hh").css({"width":$(window).width()/2}); 
     $(".qun").css({"width":$(window).width()/2});
     $(".sr").children("div").children("input").addClass("form-control");
     $(window).resize(function() {
