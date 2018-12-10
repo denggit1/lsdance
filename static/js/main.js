@@ -1,4 +1,5 @@
 $(function () {
+    var author = 'D'
     $(".lb").css({"width":$(".img").css("width")});
     // $(".hh").css({"width":$(window).width()/2});
     $(".qun").css({"width":$(window).width()/2});
@@ -12,20 +13,17 @@ $(function () {
         var stuid = $.trim($("input[name='stuid']").val());
         var pwd = $("input[name='upwd']").val();
         var pwd2 = $("input[name='upwd2']").val();
-        var reg1 = /^\d{2}[2-3][0]\d{5}$/;   /*定义验证表达式*/
-        if(!reg1.test(stuid)){
-            alert("请输入规范的学号!");
-            return false;
+        var reg1 = /^\d+$/;
+        if (!reg1.test(stuid)){
+            alert('请输入规范的学号！');
         }
-        else if(pwd.length<6 | pwd.length>16){
-            alert("请输入6-16位的密码!");
-            return false;
+        else if(pwd=='' | pwd2==''){
+            alert('密码不能为空！');
         }
         else if (pwd != pwd2) {
             alert("两次密码不一致!");
             $("input[name='upwd']").val("");
             $("input[name='upwd2']").val("");
-            return false;
         }
         else {
             $.ajax({
@@ -34,7 +32,13 @@ $(function () {
                 data: {'stuid':stuid, 'upwd':pwd},
                 dataType: 'json',
                 success: function(data){
-                    if(data.status=='sid1'){
+                    if(data.status=='sidzz'){
+                        alert("请输入规范的学号!");
+                    }
+                    else if(data.status=='pwderr'){
+                        alert("请输入6-16位的密码!");
+                    }
+                    else if(data.status=='sid1'){
                         alert('用户名已存在！')
                     }
                     else if(data.status=='sid0'){
@@ -74,5 +78,8 @@ $(function () {
                 }
             });
         }
+    });
+    $('.account').click(function () {
+
     });
 });

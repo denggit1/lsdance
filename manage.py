@@ -1,12 +1,13 @@
 # coding=utf-8
-from flask import Flask, render_template, request, jsonify, session, redirect
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from flask_script import Manager
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, PasswordField, StringField
+from wtforms import IntegerField, PasswordField
 from wtforms.validators import DataRequired, EqualTo
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from sha import sha
+import re
 
 app = Flask(__name__)
 manage = Manager(app)
@@ -36,12 +37,18 @@ class User(db.Model):
     userclass = db.Column(db.String(32), unique=False, nullable=True)
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'), default=1)
 
+    def __repr__(self):
+        return '<学号 %d>' % self.stuid
+
 
 class Role(db.Model):
     __tablename__ = 'role'
     id = db.Column(db.Integer, primary_key=True)
     role = db.Column(db.String(32), unique=False, nullable=False)
     users = db.relationship("User", backref="role")
+
+    def __repr__(self):
+        return self.role
 
 
 def Info():
@@ -142,7 +149,11 @@ def register():
         s1 = sha()
         s1.update(upwd)
         pwd = s1.hexdigest()
-        if db.session.query(User).filter(User.stuid == stuid).count() > 0:
+        if re.match('^\d{2}[2-3][0]\d{5}$', str(stuid)) is None:
+            x = 'sidzz'
+        elif len(upwd) < 6 or len(upwd) > 16:
+            x = 'pwderr'
+        elif db.session.query(User).filter(User.stuid == stuid).count() > 0:
             x = 'sid1'
         else:
             x = 'sid0'
@@ -200,7 +211,10 @@ def account():
         if upwd != '' and newpwd != '' and newpwd2 != '' and newpwd == newpwd2 and user is not None:
             user.pwd = shanewpwd
             db.session.commit()
-        return redirect('/userinfo')
+            return redirect('/userinfo')
+        else:
+            title = u'密码修改失败'
+            return render_template('account.html', title=title)
     title = u'帐号管理'
     return render_template('account.html', title=title)
 
@@ -222,7 +236,10 @@ def datum():
             user.college = college
             user.userclass = userclass
             db.session.commit()
-        return redirect('/userinfo')
+            return redirect('/userinfo')
+        else:
+            title = u'资料修改失败'
+            return render_template('datum.html', title=title)
     title = u'修改资料'
     return render_template('datum.html', title=title)
 
