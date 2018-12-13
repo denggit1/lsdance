@@ -2,26 +2,25 @@
 {% block text %}
 	<div class="musicmv">
 		<h2>舞蹈视频</h2><br>
-		<p><a target="_blank"
-			  href="http://v.youku.com/v_show/id_XMTg3MDQzNTA4NA==.html?from=s1.8-1-1.2&spm=a2h0k.8191407.0.0">
-			社团文化展</a></p>
+		{% for msg in mv %}
+			<p><a target="_blank"
+			  href='{{msg.mvurl}}'>
+			{{msg.mvname}}</a></p>
+		{% endfor %}
 		<p><a target="_blank"
 			  href="http://v.youku.com/v_show/id_XMTg3ODE2ODYyOA==.html?from=s1.8-1-1.2&spm=a2h0k.8191407.0.0">
-			元旦晚会</a></p>
+			 赤道和北极（开场版）-2017元旦晚会</a></p>
 		<p><a target="_blank"
 			  href="http://v.youku.com/v_show/id_XMTM5Mjg2NDU1Mg==.html?from=s1.8-1-1.2&spm=a2h0k.8191407.0.0">
-			雨中的华尔兹</a></p>
-		<p><a target="_blank"
-			  href="https://v.youku.com/v_show/id_XMzkzNDc5OTU4NA==.html?spm=a2h0k.11417342.soresults.dtitle">
-			下一秒</a></p>
+			雨中的华尔兹-2014红五月晚会</a></p>
 		<p><a target="_blank"
 			  href="http://v.youku.com/v_show/id_XMTQxMjE1Nzc2OA==.html?from=s1.8-1-1.2&spm=a2h0k.8191407.0.0">
-			爱的华尔兹</a></p>
+			爱的华尔兹-2015社团文化展</a></p>
 		<p><a target="_blank"
 			  href="http://v.youku.com/v_show/id_XODc0Njg1Nzk2.html?from=s1.8-1-1.2&spm=a2h0k.8191407.0.0">
-			平四表演</a></p>
+			平四表演-2015经管学院晚会</a></p>
 		<p><a target="_blank"
 			  href="http://v.youku.com/v_show/id_XMTU2OTAwOTY3Mg==.html?from=s1.8-1-1.2&spm=a2h0k.8191407.0.0">
-			juet one last dance</a></p>
+			juet one last dance-2015红五月 </a></p>
 	</div>
 {% endblock %}

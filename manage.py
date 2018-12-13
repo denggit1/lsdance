@@ -51,6 +51,13 @@ class Role(db.Model):
         return self.role
 
 
+class Mv(db.Model):
+    __tablename__ = 'mv'
+    id = db.Column(db.Integer, primary_key=True)
+    mvname = db.Column(db.String(32), unique=True, nullable=False)
+    mvurl = db.Column(db.String(128), unique=True, nullable=False)
+
+
 def Info():
     stuid = session.get('stuid')
     if stuid is not None:
@@ -92,7 +99,9 @@ def dancetype():
 @app.route('/dancemv')
 def dancemv():
     info = Info()
-    return render_template('dancemv.html', info=info)
+    mv = db.session.query(Mv).all()
+    print type(mv)
+    return render_template('dancemv.html', info=info, mv=mv)
 
 
 @app.route('/dancemusic')
@@ -136,7 +145,6 @@ def register():
             role1 = Role(id=1, role='people')
             db.session.add(role1)
             db.session.commit()
-            print db.session.query(Role).all()
         stuid = form.stuid.data
         upwd = form.upwd.data
         namestr = str(stuid)
@@ -188,7 +196,11 @@ def userinfo():
             Role.id == db.session.query(User).filter(User.stuid == stuid).first().role_id).first().role
     data = {'id': id, 'stuid': stuid, 'name': name, 'phone': phone,
             'college': college, 'userclass': userclass, 'role': role}
-    title = u'用户中心'
+    if db.session.query(Role).filter(
+            Role.id == db.session.query(User).filter(User.stuid == stuid).first().role_id).first().role == 'super':
+        title = u'<a href="/super">Super管理界面</a>'
+    else:
+        title = u'用户中心'
     return render_template('userinfo.html', data=data, title=title)
 
 
@@ -242,6 +254,16 @@ def datum():
             return render_template('datum.html', title=title)
     title = u'修改资料'
     return render_template('datum.html', title=title)
+
+
+@app.route('/super')
+def infosuper():
+    if db.session.query(Role).filter(
+            Role.id == db.session.query(User).filter(
+                User.stuid == session.get('stuid')).first().role_id).first().role == 'super':
+        return render_template('super.html')
+    else:
+        return redirect('/userinfo')
 
 
 if __name__ == '__main__':

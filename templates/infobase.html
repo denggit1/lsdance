@@ -2,7 +2,7 @@
 {% block page %}
 <div class="container userinfo">
     <div class="jumbotron">
-        <h2>{{ title }}</h2><br>
+        <h2>{{ title | safe }}</h2><br>
         <div class="infojm">
             {% block text %}
             {% endblock %}
