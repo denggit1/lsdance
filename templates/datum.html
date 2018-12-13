@@ -2,6 +2,7 @@
 {% block text %}
 <div class="datum">
     <form action="" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <div class="input-group">
             <span class="input-group-addon">用户姓名:</span>
             <input name="name" type="text" class="form-control" placeholder="请输入用户姓名"

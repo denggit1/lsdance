@@ -2,6 +2,7 @@
 {% block text %}
 <div class="account">
     <form action="" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <div class="input-group">
             <span class="input-group-addon">旧的密码:</span>
             <input name="upwd" type="password" class="form-control" placeholder="请输入旧的密码"

@@ -79,7 +79,13 @@ $(function () {
             });
         }
     });
-    $('.account').click(function () {
-
+    $('.mvtj').click(function () {
+        var mvid= $.trim($("input[name='mvid']").val());
+        var mvname= $.trim($("input[name='mvname']").val());
+        var mvurl= $.trim($("input[name='mvurl']").val());
+        if (mvid == '' | mvname == '' | mvurl == ''){
+            alert('视频编号、名称、链接均不能为空');
+            return false;
+        }
     });
 });

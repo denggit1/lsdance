@@ -1,4 +1,40 @@
 {% extends 'superbase.html' %}
 {% block page %}
-
+<div class="mv container">
+    <form action="" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="input-group">
+            <span class="input-group-addon">视频编号:</span>
+            <input name="mvid" type="text" class="form-control" placeholder="66"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">视频名称:</span>
+            <input name="mvname" type="text" class="form-control" placeholder="爱的华尔兹"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">视频链接:</span>
+            <input name="mvurl" type="text" class="form-control" placeholder="http://......"
+                   aria-describedby="basic-addon1">
+        </div>
+        <button type="submit" style="width: 100%;height: auto;" class="btn btn-success mvtj">添加</button>
+    </form>
+    <div class="mvdt">
+        <form action="/superdelete" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            {% for msg in mv %}
+                <p><a target="_blank"
+                  href='{{msg.mvurl}}'>
+                {{msg.id}},{{msg.mvname}}</a></p>
+            {% endfor %}
+            <div class="input-group">
+                <span class="input-group-addon">视频编号:</span>
+                <input name="mvid" type="text" class="form-control" placeholder="66"
+                       aria-describedby="basic-addon1">
+            </div>
+            <button type="submit" style="width: 100%;height: auto;" class="btn btn-success">删除</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

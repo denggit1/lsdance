@@ -4,6 +4,7 @@ from flask_script import Manager
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, PasswordField
 from wtforms.validators import DataRequired, EqualTo
+from flask_wtf.csrf import CsrfProtect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from sha import sha
@@ -15,6 +16,7 @@ manage = Manager(app)
 app.config['SECRET_KEY'] = 'XL57Byw6Tj2q3U7gtDWDIw=='
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:mysql@127.0.0.1:3306/lsdance'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+CsrfProtect(app)
 db = SQLAlchemy(app)
 Migrate(app, db)
 manage.add_command("db", MigrateCommand)
@@ -100,7 +102,6 @@ def dancetype():
 def dancemv():
     info = Info()
     mv = db.session.query(Mv).all()
-    print type(mv)
     return render_template('dancemv.html', info=info, mv=mv)
 
 
@@ -256,14 +257,34 @@ def datum():
     return render_template('datum.html', title=title)
 
 
-@app.route('/super')
+@app.route('/super', methods=['GET', 'POST'])
 def infosuper():
     if db.session.query(Role).filter(
             Role.id == db.session.query(User).filter(
                 User.stuid == session.get('stuid')).first().role_id).first().role == 'super':
-        return render_template('super.html')
+        mv = db.session.query(Mv).all()
+        if request.method == 'POST':
+            mvid = request.form.get('mvid', '')
+            mvname = request.form.get('mvname', '')
+            mvurl = request.form.get('mvurl', '')
+            if mvid.strip() != '' and mvname.strip() != '' and mvurl.strip() != '':
+                mv1 = Mv(id=mvid, mvname=mvname, mvurl=mvurl)
+                db.session.add(mv1)
+                db.session.commit()
+                return redirect('/super')
+        return render_template('super.html', mv=mv)
     else:
         return redirect('/userinfo')
+
+
+@app.route('/superdelete', methods=['POST'])
+def superdelete():
+    mvid = request.form.get('mvid', '')
+    deid = db.session.query(Mv).filter(Mv.id == mvid).first()
+    if deid is not None:
+        db.session.delete(deid)
+        db.session.commit()
+    return redirect('/super')
 
 
 if __name__ == '__main__':
