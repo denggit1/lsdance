@@ -29,7 +29,7 @@ $(function () {
             $.ajax({
                 url: '/register',
                 type: 'post',
-                data: {'stuid':stuid, 'upwd':pwd},
+                data: $('#userreg').serialize(),
                 dataType: 'json',
                 success: function(data){
                     if(data.status=='sidzz'){
@@ -62,7 +62,7 @@ $(function () {
             $.ajax({
                 url: '/login',
                 type: 'post',
-                data: {'stuid':stuid, 'upwd':upwd},
+                data: $('#userlog').serialize(),
                 dataType: 'json',
                 success: function(data){
                     if(data.status=='sid0'){
