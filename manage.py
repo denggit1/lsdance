@@ -72,6 +72,13 @@ class Mv(db.Model):
     mvurl = db.Column(db.String(128), unique=True, nullable=False)
 
 
+class Music(db.Model):
+    __tablename__ = 'music'
+    id = db.Column(db.Integer, primary_key=True)
+    musicname = db.Column(db.String(32), unique=True, nullable=False)
+    musicurl = db.Column(db.String(128), unique=True, nullable=False)
+
+
 def Info():
     stuid = session.get('stuid')
     if stuid is not None:
@@ -120,7 +127,15 @@ def dancemv():
 @app.route('/dancemusic')
 def dancemusic():
     info = Info()
-    return render_template('dancemusic.html', info=info)
+    music = db.session.query(Music).all()
+    return render_template('dancemusic.html', info=info, music=music)
+
+
+@app.route('/stuid')
+def stuid():
+    stuid = session.get('stuid', '')
+    data = {'stuid': stuid}
+    return jsonify(data)
 
 
 @app.route('/qun')
@@ -140,7 +155,6 @@ def login():
         pwd = s1.hexdigest()
         if r.get(stuid) == pwd:
             x = 'ok'
-            print 'redis-login'
             # 保存stuid
             session['stuid'] = db.session.query(User).filter(User.stuid == stuid).filter(User.pwd == pwd).first().stuid
         elif db.session.query(User).filter(User.stuid == stuid).count() <= 0:

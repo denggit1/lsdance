@@ -2,11 +2,16 @@
 {% block text %}
 	<div class="musicmv">
 		<h2>舞蹈音乐</h2><br>
-		<p><a target="_blank" href="https://music.163.com/#/song?id=536099160&market=baiduqk">不染</a></p>
-		<p><a target="_blank" href="https://music.163.com/#/song?id=108576">发现爱</a></p>
+		<p><a target="_blank" href="https://music.163.com/#/song?id=536099160">不染</a></p>
 		<p><a target="_blank" href="https://music.163.com/#/song?id=28838747">雨中的华尔兹</a></p>
 		<p><a target="_blank" href="https://music.163.com/#/song?id=4872532">爱的华尔兹</a></p>
-		<p><a target="_blank" href="https://music.163.com/#/song?id=4876404">忘了爱</a></p>
-		<p><a target="_blank" href="https://music.163.com/#/song?id=21674656">just one last dance</a></p>
+		<p class="musicbtn"><a href="javascript:;">查看更多（需登录）</a></p>
+		<div class="usermusic">
+			{% for msg in music %}
+				<p hidden><a target="_blank"
+				  href='{{msg.musicurl}}'>
+				{{msg.musicname}}</a></p>
+			{% endfor %}
+		</div>
 	</div>
 {% endblock %}

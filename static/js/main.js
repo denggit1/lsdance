@@ -88,4 +88,34 @@ $(function () {
             return false;
         }
     });
+    $('.musicbtn').click(function () {
+        $.ajax({
+            url: '/stuid',
+            type: 'get',
+            success: function (data) {
+                if(data.stuid != ''){
+                    $('.musicbtn').hide();
+                    $('.usermusic').children('p').show();
+                }
+                else {
+                    window.location.replace("/login");
+                }
+            }
+        });
+    });
+    $('.mvbtn').click(function () {
+        $.ajax({
+            url: '/stuid',
+            type: 'get',
+            success: function (data) {
+                if(data.stuid != ''){
+                    $('.mvbtn').hide();
+                    $('.usermv').children('p').show();
+                }
+                else {
+                    window.location.replace("/login");
+                }
+            }
+        });
+    });
 });
