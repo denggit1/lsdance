@@ -295,10 +295,13 @@ def datum():
 
 @app.route('/super', methods=['GET', 'POST'])
 def infosuper():
-    if db.session.query(Role).filter(
+    if session.get('stuid') is None:
+        return redirect('/login')
+    elif db.session.query(Role).filter(
             Role.id == db.session.query(User).filter(
                 User.stuid == session.get('stuid')).first().role_id).first().role == 'super':
         mv = db.session.query(Mv).all()
+        music = db.session.query(Music).all()
         if request.method == 'POST':
             mvid = request.form.get('mvid', '')
             mvname = request.form.get('mvname', '')
@@ -308,7 +311,15 @@ def infosuper():
                 db.session.add(mv1)
                 db.session.commit()
                 return redirect('/super')
-        return render_template('super.html', mv=mv)
+            musicid = request.form.get('musicid', '')
+            musicname = request.form.get('musicname', '')
+            musicurl = request.form.get('musicurl', '')
+            if musicid.strip() != '' and musicname.strip() != '' and musicurl.strip() != '':
+                music1 = Music(id=musicid, musicname=musicname, musicurl=musicurl)
+                db.session.add(music1)
+                db.session.commit()
+                return redirect('/super')
+        return render_template('super.html', mv=mv, music=music)
     else:
         return redirect('/userinfo')
 
@@ -321,6 +332,21 @@ def superdelete():
         db.session.delete(deid)
         db.session.commit()
     return redirect('/super')
+
+
+@app.route('/musicdelete', methods=['POST'])
+def musicdelete():
+    musicid = request.form.get('musicid', '')
+    deid = db.session.query(Music).filter(Music.id == musicid).first()
+    if deid is not None:
+        db.session.delete(deid)
+        db.session.commit()
+    return redirect('/super')
+
+
+@app.route('/superuser')
+def superuser():
+    return render_template('superuser.html')
 
 
 if __name__ == '__main__':

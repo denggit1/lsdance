@@ -36,5 +36,40 @@
             <button type="submit" style="width: 100%;height: auto;" class="btn btn-success">删除</button>
         </form>
     </div>
+    <form style="margin-top: 20px" action="" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="input-group">
+            <span class="input-group-addon">音乐编号:</span>
+            <input name="musicid" type="text" class="form-control" placeholder="66"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">音乐名称:</span>
+            <input name="musicname" type="text" class="form-control" placeholder="爱的华尔兹"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">音乐链接:</span>
+            <input name="musicurl" type="text" class="form-control" placeholder="http://......"
+                   aria-describedby="basic-addon1">
+        </div>
+        <button type="submit" style="width: 100%;height: auto;" class="btn btn-success">添加</button>
+    </form>
+    <div class="mvdt">
+        <form action="/musicdelete" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            {% for msg in music %}
+                <p><a target="_blank"
+                  href='{{msg.musicurl}}'>
+                {{msg.id}},{{msg.musicname}}</a></p>
+            {% endfor %}
+            <div class="input-group">
+                <span class="input-group-addon">音乐编号:</span>
+                <input name="musicid" type="text" class="form-control" placeholder="66"
+                       aria-describedby="basic-addon1">
+            </div>
+            <button type="submit" style="width: 100%;height: auto;" class="btn btn-success">删除</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

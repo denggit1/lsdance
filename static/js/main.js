@@ -88,6 +88,15 @@ $(function () {
             return false;
         }
     });
+    $('.musictj').click(function () {
+        var musicid= $.trim($("input[name='musicid']").val());
+        var musicname= $.trim($("input[name='musicname']").val());
+        var musicurl= $.trim($("input[name='musicurl']").val());
+        if (musicid == '' | musicname == '' | musicurl == ''){
+            alert('音乐编号、名称、链接均不能为空');
+            return false;
+        }
+    });
     $('.musicbtn').click(function () {
         $.ajax({
             url: '/stuid',
