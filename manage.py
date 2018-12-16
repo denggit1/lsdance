@@ -9,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from sha import sha
 import re
+import redis
 
 app = Flask(__name__)
 manage = Manager(app)
@@ -26,6 +27,17 @@ class RegistForm(FlaskForm):
     stuid = IntegerField(label=u'学号', validators=[DataRequired(u'学号不能为空')])
     upwd = PasswordField(label=u'密码', validators=[DataRequired(u'密码不能为空')])
     upwd2 = PasswordField(label=u'密码2', validators=[DataRequired(u'密码不能为空'), EqualTo('upwd', u'两次密码输入不一致')])
+
+
+class RedisHelper():
+    def __init__(self, host='localhost', port=6379):
+        self.__redis = redis.StrictRedis(host=host, port=port)
+
+    def set(self, key, value):
+        self.__redis.set(key, value)
+
+    def get(self, key):
+        return self.__redis.get(key)
 
 
 class User(db.Model):
@@ -120,17 +132,25 @@ def qun():
 def login():
     form = RegistForm()
     if request.method == 'POST':
+        r = RedisHelper('127.0.0.1', 6379)
         stuid = form.stuid.data
         upwd = form.upwd.data
         s1 = sha()
         s1.update(upwd)
         pwd = s1.hexdigest()
-        if db.session.query(User).filter(User.stuid == stuid).count() <= 0:
+        if r.get(stuid) == pwd:
+            x = 'ok'
+            print 'redis-login'
+            # 保存stuid
+            session['stuid'] = db.session.query(User).filter(User.stuid == stuid).filter(User.pwd == pwd).first().stuid
+        elif db.session.query(User).filter(User.stuid == stuid).count() <= 0:
             x = 'sid0'
         elif db.session.query(User).filter(User.stuid == stuid).filter(User.pwd == pwd).count() <= 0:
             x = 'pwd0'
         else:
             x = 'ok'
+            # 保存redis
+            r.set(stuid, pwd)
             # 保存stuid
             session['stuid'] = db.session.query(User).filter(User.stuid == stuid).filter(User.pwd == pwd).first().stuid
         data = {'status': x}
@@ -211,6 +231,7 @@ def account():
     if stuid is None:
         return redirect('/login')
     elif request.method == 'POST':
+        r = RedisHelper('127.0.0.1', 6379)
         upwd = request.form.get('upwd', '')
         newpwd = request.form.get('newpwd', '')
         newpwd2 = request.form.get('newpwd2', '')
@@ -224,6 +245,7 @@ def account():
         if upwd != '' and newpwd != '' and newpwd2 != '' and newpwd == newpwd2 and user is not None:
             user.pwd = shanewpwd
             db.session.commit()
+            r.set(stuid, shanewpwd)
             return redirect('/userinfo')
         else:
             title = u'密码修改失败'
