@@ -14,7 +14,7 @@
 		<p class="mvbtn"><a href="javascript:;">查看更多（需登录）</a></p>
 		<div class="usermv">
 			{% for msg in mv %}
-				<p><a target="_blank"
+				<p hidden><a target="_blank"
 				  href='{{msg.mvurl}}'>
 				{{msg.mvname}}</a></p>
 			{% endfor %}

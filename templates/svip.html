@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="/static/img/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <script src="/static/bootstrap/js/jquery-1.12.4.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/main.css">
+	<script src="/static/js/main.js"></script>
+	<link rel="stylesheet" href="/static/css/infostyle.css">
+	<meta name="author" content="D">
+    <title>蓝沙舞蹈俱乐部-身份信息</title>
+</head>
+<body>
+    <div class="main">
+			<div class="dbdh">
+				<nav class="navbar navbar-inverse navbar-default navbar-fixed-top">
+					<div class="container">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+									data-target="#bs-example-navbar-collapse-6" aria-expanded="false">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<a class="navbar-brand" href="/">LSDanceClub</a>
+						</div>
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
+							<ul class="nav navbar-nav">
+								<li><a href="/userinfo">用户中心</a></li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</div>
+        <div class="mv container">
+            <form action="" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <div class="input-group">
+                    <span class="input-group-addon">视频编号:</span>
+                    <input name="mvid" type="text" class="form-control" placeholder="66(不可输入已有编号)"
+                           aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">视频名称:</span>
+                    <input name="mvname" type="text" class="form-control" placeholder="爱的华尔兹"
+                           aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">视频链接:</span>
+                    <input name="mvurl" type="text" class="form-control" placeholder="http://......"
+                           aria-describedby="basic-addon1">
+                </div>
+                <button type="submit" style="width: 100%;height: auto;" class="btn btn-success mvtj">添加</button>
+            </form>
+            <div class="mvdt">
+                {% for msg in mv %}
+                    <p><a target="_blank"
+                      href='{{msg.mvurl}}'>
+                    {{msg.id}},{{msg.mvname}}</a></p>
+                {% endfor %}
+            </div>
+            <form style="margin-top: 20px" action="" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <div class="input-group">
+                    <span class="input-group-addon">音乐编号:</span>
+                    <input name="musicid" type="text" class="form-control" placeholder="66(不可输入已有编号)"
+                           aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">音乐名称:</span>
+                    <input name="musicname" type="text" class="form-control" placeholder="爱的华尔兹"
+                           aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">音乐链接:</span>
+                    <input name="musicurl" type="text" class="form-control" placeholder="http://......"
+                           aria-describedby="basic-addon1">
+                </div>
+                <button type="submit" style="width: 100%;height: auto;" class="btn btn-success musictj">添加</button>
+            </form>
+            <div class="mvdt">
+                {% for msg in music %}
+                    <p><a target="_blank"
+                      href='{{msg.musicurl}}'>
+                    {{msg.id}},{{msg.musicname}}</a></p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row footer-bottom">
+			<hr>
+			<ul style="color:#777;" class="list-inline text-center">
+				<li>@LSDanceClub</li>
+				<li><a style="color:#777;" href="http://www.miibeian.gov.cn/" target="_blank">赣ICP备18016179号</a></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

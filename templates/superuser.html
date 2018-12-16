@@ -1,10 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'superbase.html' %}
+{% block page %}
+<div class="container">
+    <form action="" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div style="margin-top: 20px;" class="input-group">
+            <span class="input-group-addon">用户学号:</span>
+            <input name="userstuid" type="text" class="form-control" placeholder="183011111"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div style="margin-top: 20px;" class="input-group">
+            <span class="input-group-addon">用户密码:</span>
+            <input name="upwd" type="text" class="form-control" placeholder="123456(改权限必须重置密码)"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div style="margin-top: 20px;" class="input-group">
+            <span class="input-group-addon">权限编号:</span>
+            <input name="roleid" type="text" class="form-control" placeholder="1普通用户,2协会成员,6管理人员,7最高权限"
+                   aria-describedby="basic-addon1">
+        </div>
+        <button type="submit" style="width: 100%;height: auto;margin-top: 20px;" class="btn btn-success">修改</button>
+    </form>
+    {% for msg in user %}
+        <p style="margin-top: 20px;">{{ msg.stuid }}
+            {{ msg.name }}
+            {{ msg.phone }}
+            {{ msg.college }}
+            {{ msg.userclass }}
+            {{ msg.role_id }}</p>
+    {% endfor %}
+</div>
+{% endblock %}

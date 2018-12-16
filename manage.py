@@ -234,6 +234,9 @@ def userinfo():
     if db.session.query(Role).filter(
             Role.id == db.session.query(User).filter(User.stuid == stuid).first().role_id).first().role == 'super':
         title = u'<a href="/super">Super管理界面</a>'
+    elif db.session.query(Role).filter(
+            Role.id == db.session.query(User).filter(User.stuid == stuid).first().role_id).first().role == 'svip':
+        title = u'<a href="/svip">Svip管理界面</a>'
     else:
         title = u'用户中心'
     return render_template('userinfo.html', data=data, title=title)
@@ -326,27 +329,85 @@ def infosuper():
 
 @app.route('/superdelete', methods=['POST'])
 def superdelete():
-    mvid = request.form.get('mvid', '')
-    deid = db.session.query(Mv).filter(Mv.id == mvid).first()
-    if deid is not None:
-        db.session.delete(deid)
-        db.session.commit()
+    if db.session.query(Role).filter(
+            Role.id == db.session.query(User).filter(
+                User.stuid == session.get('stuid')).first().role_id).first().role == 'super':
+        mvid = request.form.get('mvid', '')
+        deid = db.session.query(Mv).filter(Mv.id == mvid).first()
+        if deid is not None:
+            db.session.delete(deid)
+            db.session.commit()
     return redirect('/super')
 
 
 @app.route('/musicdelete', methods=['POST'])
 def musicdelete():
-    musicid = request.form.get('musicid', '')
-    deid = db.session.query(Music).filter(Music.id == musicid).first()
-    if deid is not None:
-        db.session.delete(deid)
-        db.session.commit()
+    if db.session.query(Role).filter(
+            Role.id == db.session.query(User).filter(
+                User.stuid == session.get('stuid')).first().role_id).first().role == 'super':
+        musicid = request.form.get('musicid', '')
+        deid = db.session.query(Music).filter(Music.id == musicid).first()
+        if deid is not None:
+            db.session.delete(deid)
+            db.session.commit()
     return redirect('/super')
 
 
-@app.route('/superuser')
+@app.route('/superuser', methods=['GET', 'POST'])
 def superuser():
-    return render_template('superuser.html')
+    if session.get('stuid') is None:
+        return redirect('/login')
+    elif db.session.query(Role).filter(
+            Role.id == db.session.query(User).filter(
+                User.stuid == session.get('stuid')).first().role_id).first().role == 'super':
+        user = db.session.query(User).all()
+        if request.method == 'POST':
+            userstuid = request.form.get('userstuid', '')
+            upwd = request.form.get('upwd', '')
+            roleid = request.form.get('roleid', '')
+            s1 = sha()
+            s1.update(upwd)
+            pwd = s1.hexdigest()
+            if userstuid.strip() != '' and upwd.strip() != '' and roleid.strip() != '':
+                user1 = db.session.query(User).filter(User.stuid == userstuid).first()
+                user1.pwd = pwd
+                user1.role_id = roleid
+                db.session.commit()
+                return redirect('/superuser')
+        return render_template('superuser.html', user=user)
+    else:
+        return redirect('/userinfo')
+
+
+@app.route('/svip', methods=['GET', 'POST'])
+def infosvip():
+    if session.get('stuid') is None:
+        return redirect('/login')
+    elif db.session.query(Role).filter(
+            Role.id == db.session.query(User).filter(
+                User.stuid == session.get('stuid')).first().role_id).first().role == 'svip':
+        mv = db.session.query(Mv).all()
+        music = db.session.query(Music).all()
+        if request.method == 'POST':
+            mvid = request.form.get('mvid', '')
+            mvname = request.form.get('mvname', '')
+            mvurl = request.form.get('mvurl', '')
+            if mvid.strip() != '' and mvname.strip() != '' and mvurl.strip() != '':
+                mv1 = Mv(id=mvid, mvname=mvname, mvurl=mvurl)
+                db.session.add(mv1)
+                db.session.commit()
+                return redirect('/svip')
+            musicid = request.form.get('musicid', '')
+            musicname = request.form.get('musicname', '')
+            musicurl = request.form.get('musicurl', '')
+            if musicid.strip() != '' and musicname.strip() != '' and musicurl.strip() != '':
+                music1 = Music(id=musicid, musicname=musicname, musicurl=musicurl)
+                db.session.add(music1)
+                db.session.commit()
+                return redirect('/svip')
+        return render_template('svip.html', mv=mv, music=music)
+    else:
+        return redirect('/userinfo')
 
 
 if __name__ == '__main__':
